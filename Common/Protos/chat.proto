@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "CC.Common";
+
+package ChatCommand;
+
+// The chat service definition.
+service ChatCommands {
+  rpc Communicate (stream Command) returns (stream Command);
+}
+
+// The request message containing the serialized content.
+message Command {
+  bytes data = 1;
+}
