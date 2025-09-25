@@ -1,6 +1,7 @@
 using CC.Common;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Driver;
-
 
 namespace CC.Server;
 
@@ -8,18 +9,24 @@ public class Database : IDatabase, IAsyncInitializable
 {
     private class MongoAccount
     {
+        [BsonId]
+        public ObjectId id;
         public string username = string.Empty;
         public string password = string.Empty;
         public DateTime created_at = DateTime.UtcNow;
     }
     private class MongoChannel
     {
+        [BsonId]
+        public ObjectId id;
         public string name = string.Empty;
         public string owner = string.Empty;
         public DateTime created_at = DateTime.UtcNow;
     }
     private class MongoMessage
     {
+        [BsonId]
+        public ObjectId id;
         public string channel = string.Empty;
         public ChatMessage message = new();
         public DateTime posted_at = DateTime.UtcNow;
@@ -112,6 +119,6 @@ public class Database : IDatabase, IAsyncInitializable
     public async Task<string?> TryGetPassword(string username)
     {
         var acc = await _accounts.Find(a => a.username == username).FirstOrDefaultAsync();
-        return acc?.username;
+        return acc?.password;
     }
 }
